@@ -31,9 +31,9 @@ target_link_directories(PolisEngine PUBLIC third_party/lib/x64)
 target_link_libraries(PolisEngine freetype.lib Yoga.lib liblua54.lib opengl32.lib glew32.lib glfw3.lib)
 
 if ( MSVC )
-    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/out)
-    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/out)
-    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/out)
+    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out)
+    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/out)
+    set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/out)
 endif ( MSVC )
 
 configure_file(third_party/dll/x64/glew32.dll ${CMAKE_CURRENT_SOURCE_DIR}/out/glew32.dll COPYONLY)
