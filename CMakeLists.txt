@@ -36,6 +36,6 @@ if ( MSVC )
     set_target_properties(PolisEngine PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/out)
 endif ( MSVC )
 
-configure_file(third_party/dll/x64/glew32.dll ${CMAKE_CURRENT_SOURCE_DIR}/out/glew32.dll COPYONLY)
-configure_file(third_party/dll/x64/lua54.dll ${CMAKE_CURRENT_SOURCE_DIR}/out/lua54.dll COPYONLY)
+configure_file(third_party/dll/x64/glew32.dll ${CMAKE_SOURCE_DIR}/out/glew32.dll COPYONLY)
+configure_file(third_party/dll/x64/lua54.dll ${CMAKE_SOURCE_DIR}/out/lua54.dll COPYONLY)
 
