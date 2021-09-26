@@ -34,7 +34,7 @@ void Rendering::RenderFrame(entt::registry& registry) {
 		camera_transform = glm::mat4();
 		view_pos = glm::vec3(0.0);
 	} else {
-		auto camera = registry.get<Camera>(camera_view.front());
+		auto& camera = registry.get<Camera>(camera_view.front());
 		camera_transform = camera.projection * camera.view;
 		view_pos = registry.get<Transform>(camera_view.front()).position;
 	}
@@ -157,7 +157,7 @@ void Rendering::BindGBuffer() {
 	glDisable(GL_BLEND);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Rendering::RenderObjects(entt::registry& registry, const glm::mat4& camera_transform) {
@@ -168,13 +168,13 @@ void Rendering::RenderObjects(entt::registry& registry, const glm::mat4& camera_
 		glUseProgram(renderable.shader_program->program_id);
 		renderable.shader_program->SetMat4("camera_transform", camera_transform);
 		renderable.shader_program->SetMat4("object_transform", transform.matrix());
-		int i = 0;
-		for (; i < renderable.textures.size(); i++) {
+
+		for (int i = 0; i < renderable.textures.size(); i++) {
 			renderable.shader_program->SetTexture("texture_" + std::to_string(i), i, renderable.textures[i]);
 		}
-		for (; i < 10; i++) {
+		/*for (; i < 10; i++) {
 			renderable.shader_program->SetTexture("texture_" + std::to_string(i), i, 0);
-		}
+		}*/
 		renderable.mesh->Bind();
 		renderable.mesh->Draw();
 	}

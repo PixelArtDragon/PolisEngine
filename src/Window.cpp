@@ -21,11 +21,22 @@ void Window::SetRendering(Rendering* rendering) {
 void Window::Init() {
 	glfwInit();
 
+	glfwSetErrorCallback(ErrorCallback);
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
 #ifndef NDEBUG
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif // NDEBUG
 
 	window_ = glfwCreateWindow(size_.x, size_.y, name_.c_str(), NULL, NULL);
+
+	if (!window_) {
+		Debug::Log(LogSeverity::FatalError, "Window creation failed");
+		glfwTerminate();
+	}
+
 	glfwMakeContextCurrent(window_);
 	glfwSetWindowUserPointer(window_, (void*)this);
 	glfwSetKeyCallback(window_, KeypressCallback);
@@ -80,4 +91,8 @@ void Window::MouseButtonCallback(GLFWwindow* window, int button, int action, int
 	default:
 		break;
 	}
+}
+
+void Window::ErrorCallback(int error, const char* message) {
+
 }

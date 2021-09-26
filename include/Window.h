@@ -27,6 +27,7 @@ private:
 	static void WindowResizedCallback(GLFWwindow* window, int width, int height);
 	static void MouseMovedCallback(GLFWwindow* window, double x_pos, double y_pos);
 	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+	static void ErrorCallback(int error, const char* message);
 	InputManager* input_manager_;
 	Rendering* rendering_;
 	glm::tvec2<int> size_;
