@@ -2,3 +2,4 @@ build/*
 out/*
 *.obj
 !data/**/*.obj
+CMakeFiles/
