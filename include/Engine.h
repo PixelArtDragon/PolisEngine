@@ -9,6 +9,7 @@
 #include "LuaBridger.h"
 #include "Timer.h"
 #include "UI.h"
+#include "Scene.h"
 
 const std::string LUA_MAIN_FILE = "Main.lua";
 
@@ -28,5 +29,6 @@ public:
 	InputManager input_manager; //Order here is important, since we want the lua state destroyed after InputManager is destroyed
 	Timer timer;
 	UI ui;
+	Scene scene;
 };
 

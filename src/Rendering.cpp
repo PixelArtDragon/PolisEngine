@@ -36,8 +36,11 @@ void Rendering::RenderFrame(entt::registry& registry) {
 	} else {
 		auto& camera = registry.get<Camera>(camera_view.front());
 		camera_transform = camera.projection * camera.view;
-		view_pos = registry.get<Transform>(camera_view.front()).position;
+		view_pos = registry.get<Transform>(camera_view.front()).get_position();
 	}
+
+	//Flag visible entities for rendering
+
 
 	RenderObjects(registry, camera_transform);
 	BindLBuffer();
@@ -161,13 +164,13 @@ void Rendering::BindGBuffer() {
 }
 
 void Rendering::RenderObjects(entt::registry& registry, const glm::mat4& camera_transform) {
-	auto view = registry.view<Renderable, Transform>();
+	auto view = registry.view<Renderable, Transform, Visible>();
 	for (auto entity : view) {
 		auto& renderable = view.get<Renderable>(entity);
 		auto& transform = view.get<Transform>(entity);
 		glUseProgram(renderable.shader_program->program_id);
 		renderable.shader_program->SetMat4("camera_transform", camera_transform);
-		renderable.shader_program->SetMat4("object_transform", transform.matrix());
+		renderable.shader_program->SetMat4("object_transform", transform.get_world_matrix());
 
 		for (int i = 0; i < renderable.textures.size(); i++) {
 			renderable.shader_program->SetTexture("texture_" + std::to_string(i), i, renderable.textures[i]);
@@ -218,7 +221,7 @@ void Rendering::RenderDirectionalLights(entt::registry& registry, const glm::vec
 }
 
 void Rendering::RenderVolumetricLights(entt::registry& registry, const glm::mat4& camera_transform, const glm::vec3& view_pos) {
-	auto area_lights = registry.view<AreaLight, Transform>();
+	auto area_lights = registry.view<AreaLight, Transform, Visible>();
 	glUseProgram(volumetric_light_shader->program_id);
 	volumetric_light_shader->SetMat4("camera_transform", camera_transform);
 	volumetric_light_shader->SetVec3("view_pos", view_pos);
@@ -229,9 +232,9 @@ void Rendering::RenderVolumetricLights(entt::registry& registry, const glm::mat4
 	for (auto entity : area_lights) {
 		auto& light = registry.get<AreaLight>(entity);
 		auto& transform = registry.get<Transform>(entity);
-		volumetric_light_shader->SetMat4("object_transform", transform.matrix());
+		volumetric_light_shader->SetMat4("object_transform", transform.get_world_matrix());
 		volumetric_light_shader->SetVec3("light_color", light.color);
-		volumetric_light_shader->SetVec3("light_position", transform.position);
+		volumetric_light_shader->SetVec3("light_position", transform.get_position());
 		volumetric_light_shader->SetFloat("light_intensity", light.intensity);
 		light.shape->Bind();
 		glDrawElements(GL_TRIANGLES, light.shape->triangles.size(), GL_UNSIGNED_INT, (void*)0);

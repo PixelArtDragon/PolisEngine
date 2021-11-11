@@ -19,6 +19,9 @@ public:
 	void PollEvents();
 	void Close();
 
+	void SetTitle(const std::string& new_title);
+	std::string GetTitle() const;
+
 	bool is_open();
 	glm::tvec2<int> size() const;
 

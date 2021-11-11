@@ -35,4 +35,4 @@ add_executable(PolisEngine main.cpp
 	"UILabel.cpp"
 	"UIRect.cpp"
 	"Window.cpp"
-)
+  "Scene.cpp" "LuaWindow.cpp")

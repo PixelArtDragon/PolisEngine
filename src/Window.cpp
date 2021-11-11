@@ -58,6 +58,17 @@ bool Window::is_open() {
 	return !glfwWindowShouldClose(window_);
 }
 
+void Window::SetTitle(const std::string& new_title)
+{
+	glfwSetWindowTitle(window_, new_title.c_str());
+	name_ = new_title;
+}
+
+std::string Window::GetTitle() const
+{
+	return name_;
+}
+
 glm::tvec2<int> Window::size() const {
 	return size_;
 }

@@ -8,6 +8,7 @@
 #include "DirectionalLight.h"
 #include "ScriptRef.h"
 #include "LuaEntity.h"
+#include <SceneObject.h>
 
 void LuaComponents::RegisterComponents(sol::state& lua) {
 	lua.new_usertype<Vertex>("Vertex",
@@ -30,9 +31,11 @@ void LuaComponents::RegisterComponents(sol::state& lua) {
 		"main", &Camera::main);
 
 	lua.new_usertype<Transform>("Transform",
-		"position", &Transform::position,
-		"rotation", &Transform::rotation,
-		"scale", &Transform::scale);
+		"position", &Transform::get_position,
+		"rotation", &Transform::get_rotation,
+		"local_position", sol::property(&Transform::get_local_position, &Transform::set_local_position),
+		"local_rotation", sol::property(&Transform::get_local_rotation, &Transform::set_local_rotation),
+		"local_scale", &Transform::get_local_scale);
 
 	lua.new_usertype<AreaLight>("PointLight",
 		"intensity", &AreaLight::intensity,
@@ -71,6 +74,11 @@ void LuaComponents::AddComponentFunctions(sol::state& lua, entt::registry& regis
 	components_table["add_script_ref"] = [&](LuaEntity entity, const LuaCallback& callback) {
 		ScriptRef& ref_component = registry.emplace<ScriptRef>(entity.entity);
 		ref_component.callback = callback;
+	};
+
+	components_table["add_scene_object"] = [&](LuaEntity entity)
+	{
+		registry.emplace<SceneObject>(entity.entity);
 	};
 
 	lua.new_usertype<LuaEntity>("Entity",

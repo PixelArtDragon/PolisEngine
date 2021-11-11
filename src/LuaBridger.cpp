@@ -14,6 +14,7 @@
 #include "LuaTime.h"
 #include "LuaWorld.h"
 #include "LuaUI.h"
+#include "LuaWindow.h"
 
 void LuaBridger::Init() {
 	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
@@ -40,4 +41,5 @@ void LuaBridger::Bridge(Engine& engine) {
 	LuaUI::AddComponentFunctions(lua, engine.registry, engine.ui);
 	LuaTime::AddTime(lua, engine.timer);
 	LuaWorld::AddWorld(lua, engine);
+	LuaWindow::AddWindowInterface(lua, engine.window);
 }

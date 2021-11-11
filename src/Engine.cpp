@@ -27,7 +27,8 @@ void Engine::Init() {
 void Engine::StartGameLoop() {
 	timer.start();
 	while (window.is_open()) 	{
-		CameraUpdator::UpdateCameras(registry);
+		scene.update_graph(registry);
+		CameraUpdator::UpdateCameras(scene, registry);
 		rendering.RenderFrame(registry);
 		ui.RenderUI(registry, timer);
 		window.SwapBuffers();

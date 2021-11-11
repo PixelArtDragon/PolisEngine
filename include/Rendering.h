@@ -5,7 +5,6 @@
 #include "ResourceLoader.h"
 #include "FullscreenRenderer.h"
 
-
 class Rendering {
 public:
 	void Init(ResourceLoader& resource_loader, const glm::ivec2& screen_size);

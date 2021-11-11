@@ -6,5 +6,10 @@ void LuaWorld::AddWorld(sol::state& lua, Engine& engine) {
 		return engine.rendering.GetWorldPosition(screen_position);
 	};
 
+	world_table["set_cell_size"] = [&](const float new_size)
+	{
+		engine.scene.set_cell_size(new_size);
+	};
+
 	lua.set("World", world_table);
 }

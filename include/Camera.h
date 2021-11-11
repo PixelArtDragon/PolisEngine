@@ -2,6 +2,8 @@
 
 #include "glm/mat4x4.hpp"
 
+struct Visible {};
+
 struct Camera {
 	bool main;
 	glm::mat4 projection;
