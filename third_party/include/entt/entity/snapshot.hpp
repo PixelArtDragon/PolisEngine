@@ -55,7 +55,7 @@ class basic_snapshot {
 
         while(begin != last) {
             const auto entt = *(begin++);
-            ((reg->template all_of<Component>(entt) ? ++size[Index] : size[Index]), ...);
+            ((reg->template all_of<Component>(entt) ? ++size[Index] : 0u), ...);
         }
 
         (get<Component>(archive, size[Index], first, last), ...);
@@ -99,7 +99,7 @@ public:
             archive(*first);
         }
 
-        archive(reg->destroyed());
+        archive(reg->released());
 
         return *this;
     }
@@ -273,7 +273,7 @@ public:
      */
     const basic_snapshot_loader & orphans() const {
         reg->orphans([this](const auto entt) {
-            reg->destroy(entt);
+            reg->release(entt);
         });
 
         return *this;
@@ -448,7 +448,7 @@ public:
         for(decltype(length) pos{}; pos < length; ++pos) {
             archive(entt);
 
-            if(const auto entity = (to_integral(entt) & traits_type::entity_mask); entity == pos) {
+            if(const auto entity = traits_type::to_entity(entt); entity == pos) {
                 restore(entt);
             } else {
                 destroy(entt);
@@ -529,7 +529,7 @@ public:
      */
     basic_continuous_loader & orphans() {
         reg->orphans([this](const auto entt) {
-            reg->destroy(entt);
+            reg->release(entt);
         });
 
         return *this;
